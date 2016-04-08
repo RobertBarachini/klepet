@@ -102,7 +102,7 @@ $(document).ready(function() {
     
     //dodano 8.4.2016 00:51
      $('#seznam-uporabnikov div').click(function() {
-      $('#poslji-sporocilo').val('/zasebno ' + $(this).text() + " ");
+      $('#poslji-sporocilo').val('/zasebno "' + $(this).text() + "\" ");
       //klepetApp.procesirajUkaz('/zasebno ' + $(this).text());
       $('#poslji-sporocilo').focus();
     });
