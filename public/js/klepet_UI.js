@@ -28,6 +28,10 @@ function procesirajVnosUporabnika(klepetApp, socket) {
       //dodano
       var links = editImages(sporocilo.substring(1,sporocilo.length-1),true);
       dodajElemente(links, true);
+      
+      //dodano
+      var links2 = editYoutube(sporocilo,false);
+      dodajElemente2(links2,false);
     }
     
     
@@ -40,6 +44,10 @@ function procesirajVnosUporabnika(klepetApp, socket) {
       //dodano
       var links = editImages(sporocilo,false);
       dodajElemente(links,false);
+      
+      //dodano
+      var links2 = editYoutube(sporocilo,false);
+      dodajElemente2(links2,false);
     
     $('#sporocila').scrollTop($('#sporocila').prop('scrollHeight'));
   }
@@ -95,6 +103,10 @@ $(document).ready(function() {
     //dodano
     var links = editImages(sporocilo.besedilo,false);
     dodajElemente(links);
+    
+    //dodano
+    var links2 = editYoutube(sporocilo.besedilo,false);
+    dodajElemente2(links2);
   });
   
   socket.on('kanali', function(kanali) {
@@ -118,13 +130,6 @@ $(document).ready(function() {
     for (var i=0; i < uporabniki.length; i++) {
       $('#seznam-uporabnikov').append(divElementEnostavniTekst(uporabniki[i]));
     }
-    
-    //dodano 8.4.2016 00:51
-     $('#seznam-uporabnikov div').click(function() {
-      $('#poslji-sporocilo').val('/zasebno "' + $(this).text() + "\" ");
-      //klepetApp.procesirajUkaz('/zasebno ' + $(this).text());
-      $('#poslji-sporocilo').focus();
-    });
   });
 
   setInterval(function() {
@@ -202,4 +207,37 @@ function dodajElemente(elementi,private)
         
     }
   }  
+}
+
+//dodano
+function editYoutube(message, private)
+{
+  console.log("editYoutube");
+  var celota = [];
+  var segments = message.split(" ");
+  for (var i = 0; i < segments.length; i++) 
+  {
+    var temp = segments[i].substring(segments[i].length-5);
+    if(contains2(segments[i],"http://www.youtube.com/watch?v=") || contains2(segments[i],"https://www.youtube.com/watch?v="))
+    {
+      console.log("SEGMENT: " + segments[i]);
+      var index1 = segments[i].indexOf("://www.youtube.com/watch?v=") + "://www.youtube.com/watch?v=".length;
+      celota[i] = segments[i].substring(index1); 
+      console.log(celota[i]);
+    }
+
+  }
+  return celota;
+}
+
+function contains2(message,key)
+{
+  if(message.indexOf(key) != -1)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
