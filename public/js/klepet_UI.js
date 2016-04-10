@@ -18,14 +18,29 @@ function procesirajVnosUporabnika(klepetApp, socket) {
   var sistemskoSporocilo;
 
   if (sporocilo.charAt(0) == '/') {
+    
+
+    
     sistemskoSporocilo = klepetApp.procesirajUkaz(sporocilo);
     if (sistemskoSporocilo) {
       $('#sporocila').append(divElementHtmlTekst(sistemskoSporocilo));
+    
+      //dodano
+      var links = editImages(sporocilo.substring(1,sporocilo.length-1),true);
+      dodajElemente(links, true);
     }
+    
+    
   } else {
     sporocilo = filtirirajVulgarneBesede(sporocilo);
+    
     klepetApp.posljiSporocilo(trenutniKanal, sporocilo);
     $('#sporocila').append(divElementEnostavniTekst(sporocilo));
+    
+      //dodano
+      var links = editImages(sporocilo,false);
+      dodajElemente(links,false);
+    
     $('#sporocila').scrollTop($('#sporocila').prop('scrollHeight'));
   }
 
@@ -76,6 +91,10 @@ $(document).ready(function() {
   socket.on('sporocilo', function (sporocilo) {
     var novElement = divElementEnostavniTekst(sporocilo.besedilo);
     $('#sporocila').append(novElement);
+    
+    //dodano
+    var links = editImages(sporocilo.besedilo,false);
+    dodajElemente(links);
   });
   
   socket.on('kanali', function(kanali) {
@@ -137,4 +156,50 @@ function dodajSmeske(vhodnoBesedilo) {
       preslikovalnaTabela[smesko] + "' />");
   }
   return vhodnoBesedilo;
+}
+
+
+//dodano
+function editImages(message, private)
+{
+  var celota = [];
+  var segments = message.split(" ");
+  for (var i = 0; i < segments.length; i++) 
+  {
+    var temp = segments[i].substring(segments[i].length-5);
+    if((contains(temp,".jpg") || contains(temp,".gif") || contains(temp,".png")) && (contains(segments[i],"http://") || contains(segments[i],"https://")))
+    {
+      celota[i] = segments[i]; 
+    }
+
+  }
+  return celota;
+}
+
+function contains(message,key)
+{
+  if(message.indexOf(key) != -1)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+function dodajElemente(elementi,private)
+{
+  for (var i = 0; i < elementi.length; i++) 
+  {
+    if(elementi[i] != null)
+    {
+      if((elementi[i])[0] == "\"")
+      {
+        elementi[i] = elementi[i].substring(1);
+      }
+      $("#sporocila").append("<div class='displayElement'><img style='width:200px; margin-left:20px;' src='" + elementi[i] + "'></div>");
+        
+    }
+  }  
 }

@@ -40,7 +40,7 @@ Klepet.prototype.procesirajUkaz = function(ukaz) {
         this.socket.emit('sporocilo', { vzdevek: parametri[1], besedilo: parametri[3] });
         sporocilo = '(zasebno za ' + parametri[1] + '): ' + parametri[3];
       } else {
-        sporocilo = 'Neznan ukaz';
+        sporocilo = 'Neznan ukaz'; 
       }
       break;
     default:
