@@ -142,7 +142,7 @@ $(document).ready(function() {
       klepetApp.procesirajUkaz('/pridruzitev ' + $(this).text());
       $('#poslji-sporocilo').focus();
     });
-  });
+  }); //
 
   socket.on('uporabniki', function(uporabniki) {
     $('#seznam-uporabnikov').empty();
