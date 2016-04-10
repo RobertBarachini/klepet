@@ -130,7 +130,15 @@ $(document).ready(function() {
     for (var i=0; i < uporabniki.length; i++) {
       $('#seznam-uporabnikov').append(divElementEnostavniTekst(uporabniki[i]));
     }
+    
+     //dodano 8.4.2016 00:51
+     $('#seznam-uporabnikov div').click(function() {
+      $('#poslji-sporocilo').val('/zasebno "' + $(this).text() + "\" ");
+      //klepetApp.procesirajUkaz('/zasebno ' + $(this).text());
+      $('#poslji-sporocilo').focus();
+    });
   });
+ 
 
   setInterval(function() {
     socket.emit('kanali');
@@ -240,4 +248,24 @@ function contains2(message,key)
   {
     return false;
   }
+}
+
+function dodajElemente2(elementi,private)
+{
+  console.log("dodajElemente2");
+  for (var i = 0; i < elementi.length; i++) 
+  {
+    if(elementi[i] != null)
+    {
+      if((elementi[i])[0] == "\"")
+      {
+        elementi[i] = elementi[i].substring(1);
+      }
+      //$("#sporocila").append("<div class='displayElement2'><iframe style='margin-left: 20px; width: 200px; height: 150px;' src='https://www.youtube.com/embed/" + elementi[i] + " allowfullscreen></iframe></div>");
+      console.log("TOLE GLEDA: " + elementi[i]);
+      $('#sporocila').append("<iframe style='width:200px; height: 150px; margin-left: 20px;' src='https://www.youtube.com/embed/" + elementi[i] + "' frameborder='0' allowfullscreen></iframe>");
+      //<iframe width="560" height="315" src="https://www.youtube.com/embed/MqcFRygUpNM" frameborder="0" allowfullscreen></iframe>
+      console.log("naj bi dodal");
+    }
+  }  
 }
